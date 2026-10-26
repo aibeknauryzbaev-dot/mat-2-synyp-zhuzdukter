@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Жүздіктер жарысы!</title>
+<style>
+:root{--ink:#2b1b5a;--gold:#ffc83d;--red:#ef4444;--blue:#2f7df6;--green:#22b573;--sky1:#5ec8ff;--sky2:#c9f0ff}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#1d1240;font-family:"Baloo 2","Trebuchet MS","Comic Sans MS",system-ui,sans-serif;overflow:hidden}
+body{display:flex;align-items:center;justify-content:center}
+#stage{container-type:inline-size;width:min(100vw,177.78vh);aspect-ratio:16/9;position:relative;overflow:hidden;
+ background:linear-gradient(var(--sky1),var(--sky2) 45%,#8fe36b 45%,#5cc24a);color:var(--ink);user-select:none}
+.abs{position:absolute}
+.deco{font-size:5cqw;position:absolute;filter:drop-shadow(0 .5cqw .4cqw #0003)}
+.star{position:absolute;font-size:2cqw;animation:tw 2.4s ease-in-out infinite}
+@keyframes tw{50%{transform:scale(1.4) rotate(20deg);opacity:.6}}
+#top{left:0;top:.8cqw;width:100%;padding:0 3cqw;display:flex;justify-content:space-between;align-items:center;font-size:2.6cqw;font-weight:900}
+#top b{background:#fff;border-radius:2cqw;padding:.2cqw 1.8cqw;box-shadow:0 .5cqw 0 #0002}
+#task{left:13cqw;top:5.5cqw;width:72cqw;height:16cqw;white-space:nowrap;background:#fff;border:.6cqw solid var(--ink);border-radius:3cqw;
+ box-shadow:0 1cqw 0 var(--ink),0 2cqw 2cqw #0003;display:flex;align-items:center;justify-content:center;font-size:7cqw;font-weight:900}
+#task.pop{animation:pop .5s}
+@keyframes pop{0%{transform:scale(.7)}70%{transform:scale(1.06)}}
+#ans{left:86.5cqw;top:8cqw;width:11cqw;height:11cqw;font-size:2cqw;padding:0}
+#ansBox{left:13cqw;top:21.8cqw;width:72cqw;text-align:center;font-size:3cqw;font-weight:900;color:#fff;text-shadow:0 .2cqw 0 var(--ink),0 0 .8cqw var(--ink);height:3cqw}
+#track{left:0;top:25.5cqw;width:100%;height:23cqw;background:#4b4f63;border-top:.6cqw solid #fff;border-bottom:.6cqw solid #fff;
+ box-shadow:0 1cqw 1.5cqw #0004}
+.lane{position:absolute;left:0;width:100%;height:7.667cqw;border-top:.3cqw dashed #ffffffaa}
+.lane:first-child{border-top:0}
+#startL{left:5cqw;top:25.5cqw;width:.7cqw;height:23cqw;background:#fff}
+#finish{left:85cqw;top:25.5cqw;width:3cqw;height:23cqw;background:repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0 0/1.5cqw 1.5cqw}
+.car{position:absolute;left:6cqw;width:12cqw;height:6cqw;top:1.2cqw;transition:left 1s cubic-bezier(.3,1.4,.5,1)}
+.car svg{width:100%;height:100%;overflow:visible}
+.car.hop{animation:hop .9s}
+@keyframes hop{30%{transform:translateY(-1.6cqw) rotate(-6deg)}60%{transform:translateY(0) rotate(3deg)}}
+.pts{position:absolute;left:3cqw;top:-2.4cqw;min-width:3.4cqw;height:3.4cqw;border-radius:2cqw;background:var(--gold);border:.3cqw solid var(--ink);
+ font-size:2.3cqw;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 .3cqw 0 var(--ink)}
+.btn{position:absolute;border:.5cqw solid var(--ink);border-radius:2.2cqw;font:inherit;font-weight:900;color:#fff;cursor:pointer;
+ box-shadow:0 .9cqw 0 var(--ink);transition:transform .1s,box-shadow .1s;text-shadow:0 .2cqw 0 #0005}
+.btn:active:not(:disabled){transform:translateY(.7cqw);box-shadow:0 .2cqw 0 var(--ink)}
+.btn:disabled{filter:grayscale(.85) brightness(.9);opacity:.6;cursor:default}
+.btn:focus-visible{outline:.5cqw solid var(--gold);outline-offset:.3cqw}
+.team{top:50.6cqw;height:5.6cqw;width:21cqw;font-size:2.3cqw}
+#bR{left:3cqw;background:var(--red)}#bB{left:26cqw;background:var(--blue)}#bG{left:49cqw;background:var(--green)}
+#next{left:73cqw;top:50.6cqw;width:24cqw;height:5.6cqw;font-size:2.2cqw;background:#ff9d1c}
+#ans{background:#8b5cf6}
+.screen{position:absolute;inset:0;background:#2b1b5acc;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;z-index:20;gap:2cqw}
+.screen h1{font-size:8.5cqw;line-height:1;color:var(--gold);text-shadow:0 .6cqw 0 #7a2cc9,0 1.5cqw 2cqw #0006}
+.screen h2{font-size:5.5cqw;color:var(--gold);text-shadow:0 .4cqw 0 #7a2cc9}
+.screen p{font-size:2.6cqw;font-weight:800}
+.screen .btn{position:static;padding:1.2cqw 5cqw;font-size:3.6cqw;background:var(--green)}
+#rank{display:flex;gap:2.5cqw}
+#rank div{background:#fff;color:var(--ink);border-radius:2cqw;padding:1cqw 2.5cqw;font-size:2.6cqw;font-weight:900;border:.4cqw solid var(--ink)}
+.hidden{display:none!important}
+.conf{position:absolute;top:-4cqw;z-index:30;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(70cqw) rotate(720deg)}}
+@media (prefers-reduced-motion:reduce){.star,.car.hop{animation:none}.car{transition-duration:.01s}}
+</style>
+</head>
+<body>
+<div id="stage">
+  <span class="deco" style="left:2cqw;top:10cqw">🏫</span>
+  <span class="deco" style="left:11cqw;top:14cqw;font-size:4cqw">🌳</span>
+  <span class="deco" style="right:2cqw;top:20cqw;font-size:4cqw">🌳</span>
+  <span class="deco" style="left:5cqw;top:52cqw;font-size:3cqw">🌳</span>
+  <span class="star" style="left:15cqw;top:3cqw">⭐</span>
+  <span class="star" style="left:84cqw;top:2cqw;animation-delay:.6s">⭐</span>
+  <span class="star" style="left:48cqw;top:2cqw;animation-delay:1.2s">✨</span>
+  <span class="star" style="left:92cqw;top:12cqw;animation-delay:.3s">⭐</span>
+
+  <div id="top" class="abs"><b>🏁 Жүздіктер жарысы!</b><b id="count">1 / 8</b></div>
+  <div id="task" class="abs"></div>
+  <div id="ansBox" class="abs"></div>
+  <button id="ans" class="btn">ЖАУАП 👀</button>
+
+  <div id="track" class="abs"></div>
+  <div id="startL" class="abs"></div>
+  <div id="finish" class="abs"></div>
+
+  <button id="bR" class="btn team">🔴 ҚЫЗЫЛ ТОП</button>
+  <button id="bB" class="btn team">🔵 КӨК ТОП</button>
+  <button id="bG" class="btn team">🟢 ЖАСЫЛ ТОП</button>
+  <button id="next" class="btn">КЕЛЕСІ ТАПСЫРМА ▶</button>
+
+  <div id="start" class="screen">
+    <h1>Жүздіктер<br>жарысы!</h1>
+    <p>🔴 🔵 🟢 Үш топ — үш көлік. Кім бірінші жетеді?</p>
+    <button id="go" class="btn">БАСТАУ 🚦</button>
+  </div>
+  <div id="end" class="screen hidden">
+    <h2 id="win"></h2>
+    <div id="rank"></div>
+    <p>Барлық топ тамаша жарысты! Бәріңізге рақмет! 🌟</p>
+    <button id="again" class="btn">ҚАЙТА БАСТАУ 🔄</button>
+  </div>
+</div>
+
+<script>
+const TASKS=[["100, 200, 300, ?","400"],["700 − 300 = ?","400"],["300 + 200 = ?","500"],["900 − 400 = ?","500"],
+ ["170 − 130 = ?","40"],["500 ◻ 800","<"],["600 + 300 = ?","900"],["10 жүздік = ?","1000"]];
+const TEAMS=[{n:"ҚЫЗЫЛ ТОП",e:"🔴",c1:"#d62828",c2:"#ff8a8a",b:"bR"},{n:"КӨК ТОП",e:"🔵",c1:"#1d5fd1",c2:"#8ec0ff",b:"bB"},{n:"ЖАСЫЛ ТОП",e:"🟢",c1:"#12975f",c2:"#8af0bf",b:"bG"}];
+const $=id=>document.getElementById(id);
+const FIN=8; let idx=0,score=[0,0,0],given=[false,false,false];
+
+function carSVG(t,i){return `<svg viewBox="0 0 160 80"><defs><linearGradient id="g${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${t.c2}"/><stop offset=".5" stop-color="${t.c1}"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></linearGradient></defs>
+<ellipse cx="80" cy="74" rx="68" ry="5" fill="#0005"/>
+<g transform="translate(160,0) scale(-1,1)"><path d="M8 58Q6 42 26 39L50 36Q60 12 84 12L108 12Q126 15 134 36L148 40Q158 45 154 58Z" fill="url(#g${i})" stroke="#2b1b5a" stroke-width="4" stroke-linejoin="round"/>
+<path d="M58 36Q64 20 84 20H92V36Z" fill="#c9efff" stroke="#2b1b5a" stroke-width="3"/><path d="M98 20H108Q119 23 124 36H98Z" fill="#c9efff" stroke="#2b1b5a" stroke-width="3"/>
+<ellipse cx="70" cy="46" rx="34" ry="5" fill="#fff" opacity=".4"/><circle cx="12" cy="48" r="5" fill="#ffe14d" stroke="#2b1b5a" stroke-width="2"/></g>
+<circle cx="80" cy="50" r="8" fill="#fff" stroke="#2b1b5a" stroke-width="2.5"/><text x="80" y="55" text-anchor="middle" font-size="12" font-weight="900" fill="#2b1b5a" font-family="sans-serif">${i+1}</text>
+
+<g stroke="#2b1b5a" stroke-width="4"><circle cx="38" cy="60" r="14" fill="#222"/><circle cx="122" cy="60" r="14" fill="#222"/></g>
+<circle cx="38" cy="60" r="6" fill="#ddd"/><circle cx="122" cy="60" r="6" fill="#ddd"/></svg>`}
+
+function build(){
+  const tr=$("track"); tr.innerHTML="";
+  TEAMS.forEach((t,i)=>{
+    const l=document.createElement("div"); l.className="lane"; l.style.top=(i*7.667)+"cqw";
+    l.innerHTML=`<div class="car" id="car${i}">${carSVG(t,i)}<div class="pts" id="pts${i}">0</div></div>`;
+    tr.appendChild(l);
+  });
+}
+function place(i,p){$("car"+i).style.left=(6+p*67)+"cqw"}
+function hop(i){const c=$("car"+i);c.classList.remove("hop");void c.offsetWidth;c.classList.add("hop")}
+
+function showTask(){
+  given=[false,false,false];
+  $("task").textContent=TASKS[idx][0];
+  $("task").classList.remove("pop");void $("task").offsetWidth;$("task").classList.add("pop");
+  $("count").textContent=(idx+1)+" / "+TASKS.length;
+  $("ansBox").textContent="";
+  TEAMS.forEach(t=>$(t.b).disabled=false);
+  $("ans").disabled=false;
+  $("next").textContent=idx===TASKS.length-1?"ЖАРЫСТЫ АЯҚТАУ 🏆":"КЕЛЕСІ ТАПСЫРМА ▶";
+}
+function award(i){
+  if(given[i])return; given[i]=true;
+  score[i]++; $("pts"+i).textContent=score[i];
+  $(TEAMS[i].b).disabled=true;
+  place(i,score[i]/FIN); hop(i);
+}
+function finish(){
+  const max=Math.max(...score), win=[];
+  score.forEach((s,i)=>{if(s===max)win.push(i)});
+  win.forEach(i=>{place(i,1);hop(i)});
+  $("end").querySelector("#win").textContent="🏆 Жеңімпаз: "+win.map(i=>TEAMS[i].n).join(" және ")+"!";
+  $("rank").innerHTML=TEAMS.map((t,i)=>`<div>${t.e} ${score[i]} ұпай</div>`).join("");
+  confetti(win);
+  setTimeout(()=>$("end").classList.remove("hidden"),1700);
+  setTimeout(()=>confetti(win),2200);
+}
+function confetti(win){
+  const st=$("stage"),cols=["#ff4d6d","#ffc83d","#2f7df6","#22b573","#b45cff","#ff9d1c"],em=["⭐","🌟","✨"];
+  for(let k=0;k<70;k++){
+    const d=document.createElement("div"); d.className="conf";
+    const star=k%4===0;
+    d.style.left=Math.random()*100+"cqw";
+    d.style.animationDuration=(2.5+Math.random()*2.5)+"s";
+    d.style.animationDelay=(Math.random()*.8)+"s";
+    if(star){d.textContent=em[k%3];d.style.fontSize="3cqw"}
+    else{d.style.width="1.1cqw";d.style.height="1.8cqw";d.style.background=cols[k%cols.length];d.style.borderRadius=".2cqw"}
+    st.appendChild(d); setTimeout(()=>d.remove(),6500);
+  }
+}
+function reset(){
+  idx=0;score=[0,0,0];
+  TEAMS.forEach((t,i)=>{$("pts"+i).textContent="0";place(i,0)});
+  $("end").classList.add("hidden"); showTask();
+}
+TEAMS.forEach((t,i)=>$(t.b).onclick=()=>award(i));
+$("ans").onclick=()=>{$("ansBox").textContent="Жауабы: "+TASKS[idx][1]};
+$("next").onclick=()=>{ if(idx<TASKS.length-1){idx++;showTask()} else finish() };
+$("go").onclick=()=>{$("start").classList.add("hidden");reset()};
+$("again").onclick=()=>{reset()};
+build(); showTask();
+</script>
+</body>
+</html>
